@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "a71a356b-580e-4a22-b8c9-3f7a90d917f7",
+		"name": "NetworkTopology",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "上传配置文件",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/liufan/program/PYTHON/Network/NetworkTopology/command_util/conf.yml"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/topology-file",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"topology-file"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "通过配置脚本执行",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "script",
+							"value": "Apache\nRouterA.ip=172.16.0.1\nRouterA.password=CISCO\nRouterA.port=s0/0/0:192.168.1.2 255.255.255.0,lo0:172.16.1.1 255.255.255.0,lo1:172.16.2.1 255.255.255.0,lo2:172.16.3.1 255.255.255.0\nRouterA.command=router ospf 1,network 192.168.1.0 0.0.0.255 area 0,network 172.16.0.0 0.0.255.255 area 1,exit\nRouterA.ping=192.168.1.1,192.168.2.1,192.168.2.2\nRouterA.show=sh ip route ospf\nRouterA.showtest=192.168.2.0 via 192.168.1.1\n\nRouterB.ip=172.16.0.2\nRouterB.password=CISCO\nRouterB.port=s0/0/0:192.168.1.1 255.255.255.0,s0/0/1:192.168.2.1 255.255.255.0\nRouterB.command=router ospf 1,network 192.168.1.0 0.0.0.255 area 0,network 192.168.2.0 0.0.0.255 area 51,exit\nRouterB.ping=192.168.1.2,192.168.2.2\nRouterB.show=sh ip route ospf\nRouterB.showtest=172.16.1.1 via 192.168.1.2,\\\n  172.16.2.1 via 192.168.1.2,\\\n  172.16.3.1 via 192.168.1.2\n\nRouterC.ip=172.16.0.3\nRouterC.password=CISCO\nRouterC.port=s0/0/1:192.168.2.2 255.255.255.0,lo0:172.24.2.1 255.255.255.0\nRouterC.command=router ospf 1,network 192.168.2.0 0.0.0.255 area 51,exit\nRouterC.ping=192.168.1.2,192.168.1.1,192.168.2.1\nRouterC.show=sh ip route ospf\nRouterC.showtest=172.16.1.1 via 192.168.2.1,\\\n  172.16.2.1 via 192.168.2.1,\\\n  172.16.3.1 via 192.168.2.1,\\\n  192.168.1.0 via 192.168.2.1\n",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/config-script",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"config-script"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "测试连接",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/topology-test",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"topology-test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "通过命令行执行",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "router",
+							"value": "RouterA",
+							"type": "text"
+						},
+						{
+							"key": "command",
+							"value": "show run",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "CISCO",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/config-lines",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"config-lines"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,64 @@
+{
+  "test": {
+    "case1": {
+      "router": "RouterA",
+      "type": 0,
+      "input": "show ip route",
+      "output": ""
+    },
+    "case2": {
+      "router": "RouterB",
+      "type": 0,
+      "input": "show ip route",
+      "output": ""
+    },
+    "case3": {
+      "router": "RouterC",
+      "type": 0,
+      "input": "show ip route",
+      "output": ""
+    },
+    "case4": {
+      "router": "RouterA",
+      "type": 0,
+      "input": "show ip interface brief",
+      "output": ""
+    },
+    "case5": {
+      "router": "RouterB",
+      "type": 0,
+      "input": "show ip interface brief",
+      "output": ""
+    },
+    "case6": {
+      "router": "RouterC",
+      "type": 0,
+      "input": "show ip interface brief",
+      "output": ""
+    },
+    "case7": {
+      "router": "RouterA",
+      "type": 0,
+      "input": "ping 192.168.3.1",
+      "output": ""
+    },
+    "case8": {
+      "router": "RouterA",
+      "type": 0,
+      "input": "ping 192.168.4.1",
+      "output": ""
+    },
+    "case9": {
+      "router": "RouterB",
+      "type": 0,
+      "input": "ping 192.168.4.1",
+      "output": ""
+    },
+    "case10": {
+      "router": "RouterC",
+      "type": 0,
+      "input": "ping 192.168.3.1",
+      "output": ""
+    }
+  }
+}
