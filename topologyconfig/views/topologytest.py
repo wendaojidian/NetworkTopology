@@ -83,8 +83,9 @@ class TopologyTestInput(APIView):
 
             test_dict[case]["output"] = router.exec_cmd(command_info["input"])
             print("output: ", test_dict[case]["output"])
+        test_dict_save = {'test': test_dict}
         with open(output_path, 'w') as file:
-            file.write(json.dumps(test_dict))
+            file.write(json.dumps(test_dict_save))
 
         return HttpResponse(status=200, content="ok")
 

@@ -49,14 +49,8 @@
   },
   "case9": {
     "router": "RouterA",
-    "type": 0,
-    "input": "traceroute 192.168.2.2",
-    "output": "traceroute 192.168.2.2\r\n\r\nType escape sequence to abort.\r\nTracing the route to "
-  },
-  "case10": {
-    "router": "RouterA",
     "type": 1,
     "input": "show ip ospf database",
-    "output": ""
+    "output": "Summary Net Link States"
   }
 }

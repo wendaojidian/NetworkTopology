@@ -2,7 +2,7 @@ Apache
 RouterA.ip=172.16.0.1
 RouterA.password=CISCO
 RouterA.port=s0/0/0:192.168.1.2 255.255.255.0,lo0:172.16.1.1 255.255.255.0,lo1:172.16.2.1 255.255.255.0,lo2:172.16.3.1 255.255.255.0
-RouterA.command=router ospf 1,network 192.168.1.0 0.0.0.255 area 0,network 172.16.0.0 0.0.255.255 area 1,exit
+RouterA.command=router ospf 1,network 192.168.1.0 0.0.0.255 area 0,network 172.16.0.0 0.0.0.255 area 1,exit
 RouterA.ping=192.168.1.1,192.168.2.1,192.168.2.2
 RouterA.show=sh ip route ospf
 RouterA.showtest=192.168.2.0 via 192.168.1.1

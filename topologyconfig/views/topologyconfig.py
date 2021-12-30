@@ -63,7 +63,7 @@ class TopologyConfigLines(APIView):
     # 前端交互执行（发送命令列表）
     @staticmethod
     def post(request, *args, **kwargs):
-        login_2nd()
+
         router_name = request.POST.get('router')
         command = request.POST.get('command')
         password = request.POST.get('password')
@@ -77,19 +77,41 @@ class TopologyConfigLines(APIView):
 
         return_msg = None
         if command == 'enable':
-            router.input('enable')
-            if password:
-                router.tn.read_until(b'Password:')
-                print('password read done')
-                return_msg = router.exec_cmd(password)
+            try:
+                router.input('enable')
+                if password:
+                    router.tn.read_until(b'Password:')
+                    print('password read done')
+                    return_msg = router.exec_cmd(password)
+            except BrokenPipeError:
+                login_2nd()
+                router.input('enable')
+                if password:
+                    router.tn.read_until(b'Password:')
+                    print('password read done')
+                    return_msg = router.exec_cmd(password)
+
         elif command == 'reload':
-            router.input('reload')
-            router.tn.read_until(b"[yes/no]: ")
-            router.input('no')
-            router.tn.read_until(b"[confirm]")
-            return_msg = router.exec_cmd("")
+            try:
+                router.input('reload')
+                router.tn.read_until(b"[yes/no]: ")
+                router.input('no')
+                router.tn.read_until(b"[confirm]")
+                return_msg = router.exec_cmd("")
+            except BrokenPipeError:
+                login_2nd()
+                router.input('reload')
+                router.tn.read_until(b"[yes/no]: ")
+                router.input('no')
+                router.tn.read_until(b"[confirm]")
+                return_msg = router.exec_cmd("")
+
         else:
-            return_msg = router.exec_cmd(command)
+            try:
+                return_msg = router.exec_cmd(command)
+            except BrokenPipeError:
+                login_2nd()
+                return_msg = router.exec_cmd(command)
 
         return HttpResponse(status=200, content=return_msg)
 
