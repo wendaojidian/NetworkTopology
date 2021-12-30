@@ -56,9 +56,6 @@ class TelnetClient:
             res = self.get_output()
         except EOFError:
             raise EOFError("读写错误")
-        print("===================")
-        print(res)
-        print("===================")
         return res
 
     def __str__(self):

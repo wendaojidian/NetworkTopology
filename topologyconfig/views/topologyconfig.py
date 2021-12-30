@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from NetworkTopology.settings import RouterA, RouterB, RouterC
-from command_util.command_util import get_conf, get_commands
-from model.executetelnet import login_2nd, execute_command
+from command_util.command_util import get_conf, get_commands, regen_commands, get_interface_info
+from model.executetelnet import login_2nd, execute_command, execute_command2
 
 from NetworkTopology import settings
 
@@ -18,33 +18,45 @@ class TopologyConfigScript(APIView):
         script = request.POST.get('script')
         settings.CONF = get_conf(script)
         commands = get_commands(settings.CONF)
-        return_info = execute_command(commands)
+        return_info = execute_command2(commands),
+        settings.RouterA_interface_brief = get_interface_info(
+            execute_command2([('RouterA', 'command', 'show ip interface brief')]))
+        settings.RouterA_interface_brief = get_interface_info(
+            execute_command2([('RouterA', 'command', 'show ip interface brief')]))
+        settings.RouterA_interface_brief = get_interface_info(
+            execute_command2([('RouterA', 'command', 'show ip interface brief')]))
+
         return HttpResponse(status=200, content=return_info)
-        # return Response(status=200, data=commands)
 
 
 class TopologyConfigLists(APIView):
     # 发送配置文件内容（字符串），返回命令列表
     @staticmethod
     def post(request, *args, **kwargs):
-        # 检查登录
-        login_2nd()
         script = request.POST.get('script')
         settings.CONF = get_conf(script)
-        commands = get_commands(settings.CONF)
+        commands = regen_commands(get_commands(settings.CONF))
         return Response(status=200, data=commands)
 
 
-class TopologyConfigList(APIView):
-    # 发送配置文件内容（字符串），返回命令列表
+class TopologyConfig(APIView):
+    # 执行单条命令
     @staticmethod
     def post(request, *args, **kwargs):
         # 检查登录
-        login_2nd()
-        script = request.POST.get('script')
-        settings.CONF = get_conf(script)
-        commands = get_commands(settings.CONF)
-        return Response(status=200, data=commands)
+        router_name = request.POST.get('router')
+        command = request.POST.get('command')
+        # 命令执行的类型，交互式配置还是从配置文件执行
+        input_note = request.POST.get('input')
+        input_type = request.POST.get('type')
+        try:
+            return_info = execute_command(router_name, command, input_note)
+        except BrokenPipeError:
+            login_2nd()
+            return_info = execute_command(router_name, command, input_note)
+        print("return_info", return_info)
+
+        return Response(status=200, data=return_info)
 
 
 class TopologyConfigLines(APIView):

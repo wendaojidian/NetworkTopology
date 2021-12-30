@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from NetworkTopology import settings
 from NetworkTopology.settings import RouterA, RouterB, RouterC
 from command_util.command_util import *
-from model.executetelnet import login_1st, login_2nd, execute_command
+from model.executetelnet import login_1st, login_2nd, execute_command, execute_commands, execute_command2
 import json
 
 
@@ -26,7 +26,7 @@ class TopologyTest(APIView):
         router = RouterA
 
         commands = enable(settings.CONF)
-        output_str = execute_command(commands)
+        execute_command2(commands)
 
         test_result = ""
         for case, command_info in test_dict.items():
@@ -68,7 +68,7 @@ class TopologyTestInput(APIView):
         print(test_dict)
 
         commands = enable(settings.CONF)
-        output_str = execute_command(commands)
+        output_str = execute_command2(commands)
 
         router = RouterA
         for case, command_info in test_dict.items():

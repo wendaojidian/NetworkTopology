@@ -296,6 +296,23 @@ def get_commands(conf):
     return commands
 
 
+def regen_commands(commands):
+    command_list = []
+    for command in commands:
+        if len(command) == 4:
+            command_list.append({
+                "router": command[0],
+                "command": command[3],
+                "input": command[2],
+            })
+        elif len(command) == 3:
+            command_list.append({
+                "router": command[0],
+                "command": command[2],
+            })
+    return command_list
+
+
 def get_interface_info(brief, detail=None):
     '''
     Parameters
@@ -614,6 +631,7 @@ if __name__ == '__main__':
         reload_commands = reload(conf)
         # print(reload_commands)
         commands = get_commands(conf)
+        command_list = regen_commands(commands)
         print(commands)
         # save_conf(conf, "test_save.yml")
         graph = construct_graph(conf)

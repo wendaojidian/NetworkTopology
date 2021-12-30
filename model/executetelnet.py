@@ -2,7 +2,7 @@ import threading
 import time
 
 from NetworkTopology.settings import RouterA, RouterB, RouterC
-from command_util.command_util import reload, enable
+from command_util.command_util import reload, enable, regen_commands
 
 
 def login_1st2(login_info):
@@ -66,8 +66,10 @@ def login_1st(login_info):
 
             commands = enable(login_info)
             commands.extend(reload(login_info))
-            print("command2:", commands)
-            output = execute_command(commands)
+            execute_command2(commands)
+            # commands = regen_commands(commands)
+            # print("command2:", commands)
+            # output = execute_command(commands)
 
             threading.Thread(target=login, args=(RouterA,)).start()
             threading.Thread(target=login, args=(RouterB,)).start()
@@ -103,7 +105,7 @@ def login(route):
         time.sleep(1)
 
 
-def execute_command(commands):
+def execute_command2(commands):
     router = RouterA
     return_info = ''
 
@@ -129,4 +131,34 @@ def execute_command(commands):
             print("=" * 20)
             print(return_info)
             print()
+    return return_info
+
+
+def execute_command(router_name, command, input_note=""):
+    router = RouterA
+    if router_name == 'RouterA':
+        router = RouterA
+    elif router_name == 'RouterB':
+        router = RouterB
+    elif router_name == 'RouterC':
+        router = RouterC
+    return_info = ""
+    if input_note == "":
+        print(command)
+        return_info = router.exec_cmd(command)
+        print(return_info)
+    else:
+        print(command)
+        router.input(command)
+        router.tn.read_until(bytes(input_note, encoding='utf-8'))
+    return return_info
+
+
+def execute_commands(commands):
+    return_info = ""
+    for command in commands:
+        if len(list(command.keys())) == 3:
+            return_info += execute_command(command['router'], command['command'], command['input'])
+        else:
+            return_info += execute_command(command['router'], command['command'])
     return return_info
